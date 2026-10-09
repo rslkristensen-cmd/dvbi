@@ -1,0 +1,5 @@
+# Secrets, such as passwords, stay on the droplet
+.env
+
+# Files that Python creates when it runs the code
+__pycache__/

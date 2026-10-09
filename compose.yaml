@@ -1,0 +1,47 @@
+services:
+  python:
+    image: python:1.0.0
+    container_name: python
+    stdin_open: true
+    volumes:
+      - data:/data
+    networks:
+      - dvbi_network
+    command: bash
+
+  dash:
+    image: dash:1.0.0
+    container_name: dash
+    ports:
+      - "8050:8050"
+    environment:
+      HOST: 0.0.0.0
+    volumes:
+      - ./dash:/app
+      - app_data:/app_data
+    networks:
+      - dvbi_network
+    command: python /app/app.py
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    env_file: ./postgres/.env
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    networks:
+      - dvbi_network
+
+volumes:
+  data:
+    external: true
+  app_data:
+    external: true
+  postgres_data:
+    external: true
+
+networks:
+  dvbi_network:
+    external: true
